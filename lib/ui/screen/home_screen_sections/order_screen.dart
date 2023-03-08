@@ -28,7 +28,7 @@ class _OrderScreenState extends State<OrderScreen>
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: 1200,
+        width: 1500,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

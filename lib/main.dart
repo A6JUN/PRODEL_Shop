@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prodel_shop/first_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/home_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/login_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/order_screen.dart';
@@ -15,12 +14,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomeScreen(),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: LoginScreen());
   }
 }

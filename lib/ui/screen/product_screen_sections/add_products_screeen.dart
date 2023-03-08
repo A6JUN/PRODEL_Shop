@@ -22,14 +22,55 @@ class _AddProductState extends State<AddProduct> {
             'Product type',
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
           ),
-          // SizedBox(
-          //   width: 280,
-          //   height: 150,
-          //   child: CustomButton(
-          //     onTap: () {},
-          //     label: 'Electronics',
-          //   ),
-          // )
+          SizedBox(
+            height: 25,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 220,
+                height: 120,
+                child: CustomButton(
+                  onTap: () {},
+                  label: 'Electronics',
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                width: 220,
+                height: 120,
+                child: CustomButton(
+                  onTap: () {},
+                  label: 'Groceries',
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                width: 220,
+                height: 120,
+                child: CustomButton(
+                  onTap: () {},
+                  label: 'Stationary',
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                width: 220,
+                height: 120,
+                child: CustomButton(
+                  onTap: () {},
+                  label: 'Cloths',
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

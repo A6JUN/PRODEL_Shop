@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.black,
                     ),
                     filled: true,
-                    fillColor: Color.fromARGB(255, 228, 224, 224),
+                    fillColor: Colors.grey[300],
                     hintText: "Email Address",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(60),
@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.black,
                     ),
                     filled: true,
-                    fillColor: Color.fromARGB(255, 228, 224, 224),
+                    fillColor: Colors.grey[300],
                     hintText: "Password",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(60),
@@ -67,7 +67,12 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 50,
             ),
             CustomButton(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
+              },
               label: 'Login',
             ),
             // SizedBox(

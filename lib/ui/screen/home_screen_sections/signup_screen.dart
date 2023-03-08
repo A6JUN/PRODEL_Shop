@@ -26,7 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: TextField(
                 decoration: InputDecoration(
                     filled: true,
-                    fillColor: Color.fromARGB(255, 228, 224, 224),
+                    fillColor: Colors.grey[300],
                     hintText: "Name",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(60),
@@ -45,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: Colors.black,
                     ),
                     filled: true,
-                    fillColor: Color.fromARGB(255, 228, 224, 224),
+                    fillColor: Colors.grey[300],
                     hintText: "Email Address",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(60),
@@ -58,6 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Material(
               child: TextField(
+                obscureText: true,
                 decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.lock_outline_rounded,
@@ -68,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: Colors.black,
                     ),
                     filled: true,
-                    fillColor: Color.fromARGB(255, 228, 224, 224),
+                    fillColor: Colors.grey[300],
                     hintText: "Password",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(60),
@@ -91,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: Colors.black,
                     ),
                     filled: true,
-                    fillColor: Color.fromARGB(255, 228, 224, 224),
+                    fillColor: Colors.grey[300],
                     hintText: "Confirm Password",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(60),
