@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:prodel_shop/ui/screen/order_screen_sections/all_orders_screen.dart';
+import 'package:prodel_shop/ui/screen/order_screen_sections/accepted_orders_screen.dart';
+import 'package:prodel_shop/ui/screen/order_screen_sections/new_orders_screen.dart';
 import 'package:prodel_shop/ui/screen/order_screen_sections/canceled_orders_screen.dart';
-import 'package:prodel_shop/ui/screen/order_screen_sections/completed_orders_screen.dart';
-import 'package:prodel_shop/ui/screen/order_screen_sections/continuing_orders_screen.dart';
+import 'package:prodel_shop/ui/screen/order_screen_sections/packed_orders_screen.dart';
+import 'package:prodel_shop/ui/screen/order_screen_sections/delivered_orders_screen.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -18,7 +19,7 @@ class _OrderScreenState extends State<OrderScreen>
   @override
   void initState() {
     _tabController = TabController(
-      length: 4,
+      length: 5,
       vsync: this,
     );
     super.initState();
@@ -33,7 +34,7 @@ class _OrderScreenState extends State<OrderScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
             Text(
               'Order Management',
@@ -49,7 +50,7 @@ class _OrderScreenState extends State<OrderScreen>
               children: [
                 OrderTabItem(
                   isSelected: _tabController!.index == 0,
-                  label: 'All Orders',
+                  label: 'New Orders',
                   onTap: () {
                     _tabController!.animateTo(0);
                     setState(() {});
@@ -60,7 +61,7 @@ class _OrderScreenState extends State<OrderScreen>
                 ),
                 OrderTabItem(
                   isSelected: _tabController!.index == 1,
-                  label: 'Completed Orders',
+                  label: 'Accepted Orders',
                   onTap: () {
                     _tabController!.animateTo(1);
                     setState(() {});
@@ -71,7 +72,7 @@ class _OrderScreenState extends State<OrderScreen>
                 ),
                 OrderTabItem(
                   isSelected: _tabController!.index == 2,
-                  label: 'Continuing Orders',
+                  label: 'Packed Orders',
                   onTap: () {
                     _tabController!.animateTo(2);
                     setState(() {});
@@ -82,9 +83,20 @@ class _OrderScreenState extends State<OrderScreen>
                 ),
                 OrderTabItem(
                   isSelected: _tabController!.index == 3,
-                  label: 'Canceled',
+                  label: 'Delivered Orders',
                   onTap: () {
                     _tabController!.animateTo(3);
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                OrderTabItem(
+                  isSelected: _tabController!.index == 4,
+                  label: 'Canceled',
+                  onTap: () {
+                    _tabController!.animateTo(4);
                     setState(() {});
                   },
                 ),
@@ -93,14 +105,15 @@ class _OrderScreenState extends State<OrderScreen>
             const SizedBox(
               height: 30,
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
+            Expanded(
               child: TabBarView(
                 controller: _tabController,
+                physics: const NeverScrollableScrollPhysics(),
                 children: const [
-                  AllOrdersScreen(),
-                  CompletedOrdersScreen(),
-                  ContinuingOrdersScreen(),
+                  NewOrdersScreen(),
+                  AcceptedOrdersScreen(),
+                  PackedOrdersScreen(),
+                  DeliveredOrdersScreen(),
                   CanceledOrdersScreen(),
                 ],
               ),
@@ -116,12 +129,12 @@ class OrderTabItem extends StatelessWidget {
   final String label;
   final bool isSelected;
   final Function() onTap;
-  const OrderTabItem({
-    super.key,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
+  const OrderTabItem(
+      {super.key,
+      required this.label,
+      required this.isSelected,
+      required this.onTap,
+      required});
 
   @override
   Widget build(BuildContext context) {

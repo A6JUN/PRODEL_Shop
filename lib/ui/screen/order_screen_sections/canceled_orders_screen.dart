@@ -32,43 +32,49 @@ class _CanceledOrdersScreenState extends State<CanceledOrdersScreen> {
               DataColumn2(
                 label: Text(
                   "Order_ID",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Customer",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Order",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Date",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Pricing",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Status",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Payment",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                ),
+              ),
+              DataColumn2(
+                label: Text(
+                  "Type",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -102,13 +108,18 @@ class _CanceledOrdersScreenState extends State<CanceledOrdersScreen> {
                 ),
                 const DataCell(
                   Text(
-                    "Canceled",
+                    "Status",
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
                 const DataCell(
                   Text(
                     "Payment",
+                  ),
+                ),
+                const DataCell(
+                  Text(
+                    "Pre_order/Delivery",
                   ),
                 ),
               ]),

@@ -1,34 +1,25 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
-class InventoryScreen extends StatefulWidget {
-  const InventoryScreen({super.key});
+class DeliveredOrdersScreen extends StatefulWidget {
+  const DeliveredOrdersScreen({super.key});
 
   @override
-  State<InventoryScreen> createState() => _InventoryScreenState();
+  State<DeliveredOrdersScreen> createState() => _DeliveredOrdersScreenState();
 }
 
-class _InventoryScreenState extends State<InventoryScreen> {
+class _DeliveredOrdersScreenState extends State<DeliveredOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          height: 40,
-        ),
         const Padding(
           padding: EdgeInsets.only(left: 20),
           child: Text(
-            'Inventory Management',
-            style: TextStyle(fontSize: 35, fontWeight: FontWeight.w900),
+            'Delivereded Orders',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
           ),
-        ),
-        const SizedBox(
-          height: 20,
         ),
         const Divider(
           thickness: 1,
@@ -40,58 +31,59 @@ class _InventoryScreenState extends State<InventoryScreen> {
             columns: const [
               DataColumn2(
                 label: Text(
-                  "Product_ID",
+                  "Order_ID",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
-                  "Product Type",
+                  "Customer",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
-                  "Product Name",
+                  "Order",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
-                  "weight",
+                  "Delivery Date",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
-                  "Quantity",
+                  "Delivery Pricing",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
-                  "Photo",
+                  "Delivery Status",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
-                  "Price",
+                  "Payment",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                ),
+              ),
+              DataColumn2(
+                label: Text(
+                  "Type",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
             ],
             rows: List<DataRow>.generate(
-              15,
+              10,
               (index) => DataRow(cells: [
                 DataCell(
                   Text(
                     index.toString(),
-                  ),
-                ),
-                const DataCell(
-                  Text(
-                    "Type",
                   ),
                 ),
                 const DataCell(
@@ -101,23 +93,33 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 ),
                 const DataCell(
                   Text(
-                    "weight",
+                    "Order",
                   ),
                 ),
                 const DataCell(
                   Text(
-                    "Stock",
-                  ),
-                ),
-                const DataCell(
-                  Text(
-                    "images",
-                    style: TextStyle(color: Colors.blue),
+                    "Date",
                   ),
                 ),
                 const DataCell(
                   Text(
                     "Price",
+                  ),
+                ),
+                const DataCell(
+                  Text(
+                    "Status",
+                    style: TextStyle(color: Colors.green),
+                  ),
+                ),
+                const DataCell(
+                  Text(
+                    "Payment",
+                  ),
+                ),
+                const DataCell(
+                  Text(
+                    "Pre_order/Delivery",
                   ),
                 ),
               ]),

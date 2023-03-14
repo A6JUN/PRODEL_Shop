@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/home_screen.dart';
-import 'package:prodel_shop/ui/screen/home_screen_sections/login_screen.dart';
+import 'package:prodel_shop/ui/screen/login_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/order_screen.dart';
-import 'package:prodel_shop/ui/screen/home_screen_sections/signup_screen.dart';
+import 'package:prodel_shop/ui/screen/signup_screen.dart';
+import 'package:prodel_shop/ui/screen/widgets/scroller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: LoginScreen());
+        home: SignUpScreen());
   }
 }

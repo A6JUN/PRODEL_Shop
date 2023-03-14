@@ -1,14 +1,14 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
-class ContinuingOrdersScreen extends StatefulWidget {
-  const ContinuingOrdersScreen({super.key});
+class PackedOrdersScreen extends StatefulWidget {
+  const PackedOrdersScreen({super.key});
 
   @override
-  State<ContinuingOrdersScreen> createState() => _ContinuingOrdersScreenState();
+  State<PackedOrdersScreen> createState() => _PackedOrdersScreenState();
 }
 
-class _ContinuingOrdersScreenState extends State<ContinuingOrdersScreen> {
+class _PackedOrdersScreenState extends State<PackedOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,7 +17,7 @@ class _ContinuingOrdersScreenState extends State<ContinuingOrdersScreen> {
         const Padding(
           padding: EdgeInsets.only(left: 20),
           child: Text(
-            'Completed Orders',
+            'Packed Orders',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
           ),
         ),
@@ -32,43 +32,49 @@ class _ContinuingOrdersScreenState extends State<ContinuingOrdersScreen> {
               DataColumn2(
                 label: Text(
                   "Order_ID",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Customer",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Order",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Date",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Pricing",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Status",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Payment",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                ),
+              ),
+              DataColumn2(
+                label: Text(
+                  "Type",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -102,13 +108,18 @@ class _ContinuingOrdersScreenState extends State<ContinuingOrdersScreen> {
                 ),
                 const DataCell(
                   Text(
-                    "Continuing",
-                    style: TextStyle(color: Color.fromARGB(255, 249, 224, 5)),
+                    "Status",
+                    style: TextStyle(color: Colors.orange),
                   ),
                 ),
                 const DataCell(
                   Text(
                     "Payment",
+                  ),
+                ),
+                const DataCell(
+                  Text(
+                    "Pre_order/Delivery",
                   ),
                 ),
               ]),

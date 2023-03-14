@@ -5,10 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/inventory_screen.dart';
+import 'package:prodel_shop/ui/screen/login_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/product_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/order_screen.dart';
-import 'package:prodel_shop/ui/screen/home_screen_sections/settings_screen.dart';
-import 'package:prodel_shop/ui/screen/home_screen_sections/staff_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,19 +29,18 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 207, 204, 204),
+        backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(),
       ),
       backgroundColor: Colors.white,
       body: TabBarView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: controller,
         children: const [
           InventoryScreen(),
           ProductScreen(),
           OrderScreen(),
-          StaffScreen(),
-          SettingsScreen(),
         ],
       ),
       drawer: Drawer(
@@ -122,36 +120,68 @@ class _HomeScreenState extends State<HomeScreen>
                 right: 20,
               ),
               child: DashboardItem(
-                icon: Icons.people,
-                label: 'Staff',
+                icon: Icons.logout,
+                label: 'Logout',
                 isSelected: controller!.index == 3,
                 onTap: () {
-                  controller!.animateTo(3);
-                  setState(() {});
-                  Navigator.pop(context);
+                  // controller!.animateTo();
+                  setState(
+                    () {
+                      showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                                title: Column(
+                                  children: const [],
+                                ),
+                                content: const Text(
+                                  "Are you sure you want to Logout? ",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const HomeScreen()),
+                                      );
+                                    },
+                                    child: Container(
+                                      color: Color.fromARGB(255, 175, 184, 191),
+                                      padding: const EdgeInsets.all(14),
+                                      child: const Text(
+                                        "Cancel",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen()),
+                                      );
+                                    },
+                                    child: Container(
+                                      color: Colors.blue,
+                                      padding: const EdgeInsets.all(14),
+                                      child: const Text(
+                                        "Logout",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ));
+                    },
+                  );
                 },
               ),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 20,
-              ),
-              child: DashboardItem(
-                icon: Icons.settings,
-                label: 'Settings',
-                isSelected: controller!.index == 4,
-                onTap: () {
-                  controller!.animateTo(4);
-                  setState(() {});
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 30,
             ),
           ],
         ),

@@ -1,14 +1,16 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 
-class CompletedOrdersScreen extends StatefulWidget {
-  const CompletedOrdersScreen({super.key});
+class AcceptedOrdersScreen extends StatefulWidget {
+  const AcceptedOrdersScreen({super.key});
 
   @override
-  State<CompletedOrdersScreen> createState() => _CompletedOrdersScreenState();
+  State<AcceptedOrdersScreen> createState() => _AcceptedOrdersScreenState();
 }
 
-class _CompletedOrdersScreenState extends State<CompletedOrdersScreen> {
+class _AcceptedOrdersScreenState extends State<AcceptedOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,7 +19,7 @@ class _CompletedOrdersScreenState extends State<CompletedOrdersScreen> {
         const Padding(
           padding: EdgeInsets.only(left: 20),
           child: Text(
-            'Completed Orders',
+            'Accepted Orders',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
           ),
         ),
@@ -32,43 +34,49 @@ class _CompletedOrdersScreenState extends State<CompletedOrdersScreen> {
               DataColumn2(
                 label: Text(
                   "Order_ID",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Customer",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Order",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Date",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Pricing",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Status",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Payment",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                ),
+              ),
+              DataColumn2(
+                label: Text(
+                  "Type",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -102,13 +110,18 @@ class _CompletedOrdersScreenState extends State<CompletedOrdersScreen> {
                 ),
                 const DataCell(
                   Text(
-                    "Completed",
-                    style: TextStyle(color: Colors.green),
+                    "Status",
+                    style: TextStyle(color: Colors.purple),
                   ),
                 ),
                 const DataCell(
                   Text(
                     "Payment",
+                  ),
+                ),
+                const DataCell(
+                  Text(
+                    "Pre_order/Delivery",
                   ),
                 ),
               ]),

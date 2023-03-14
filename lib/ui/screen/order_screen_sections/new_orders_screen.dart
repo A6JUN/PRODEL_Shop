@@ -1,14 +1,14 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
-class AllOrdersScreen extends StatefulWidget {
-  const AllOrdersScreen({super.key});
+class NewOrdersScreen extends StatefulWidget {
+  const NewOrdersScreen({super.key});
 
   @override
-  State<AllOrdersScreen> createState() => _AllOrdersScreenState();
+  State<NewOrdersScreen> createState() => _NewOrdersScreenState();
 }
 
-class _AllOrdersScreenState extends State<AllOrdersScreen> {
+class _NewOrdersScreenState extends State<NewOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,7 +17,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
         const Padding(
           padding: EdgeInsets.only(left: 20),
           child: Text(
-            'All Orders',
+            'New Orders',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
           ),
         ),
@@ -32,43 +32,49 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
               DataColumn2(
                 label: Text(
                   "Order_ID",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontWeight: FontWeight.w900),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Customer",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontWeight: FontWeight.w900),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Order",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontWeight: FontWeight.w900),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Date",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontWeight: FontWeight.w900),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Pricing",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontWeight: FontWeight.w900),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Delivery Status",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontWeight: FontWeight.w900),
                 ),
               ),
               DataColumn2(
                 label: Text(
                   "Payment",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontWeight: FontWeight.w900),
+                ),
+              ),
+              DataColumn2(
+                label: Text(
+                  "Type",
+                  style: TextStyle(fontWeight: FontWeight.w900),
                 ),
               ),
             ],
@@ -109,6 +115,11 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                 const DataCell(
                   Text(
                     "Payment",
+                  ),
+                ),
+                const DataCell(
+                  Text(
+                    "Pre_order/Delivery",
                   ),
                 ),
               ]),
