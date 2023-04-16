@@ -1,13 +1,9 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:prodel_shop/ui/screen/home_screen_sections/inventory_screen.dart';
-import 'package:prodel_shop/ui/screen/login_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/product_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/order_screen.dart';
+import 'package:prodel_shop/ui/screen/home_screen_sections/shop_info_screen.dart';
+import 'package:prodel_shop/values/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen>
   TabController? controller;
   @override
   void initState() {
-    controller = TabController(length: 5, vsync: this);
+    controller = TabController(length: 3, vsync: this);
     super.initState();
   }
 
@@ -30,173 +26,113 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(),
+        elevation: 1,
+        title: Text(
+          'PRODEL Shop',
+          style: GoogleFonts.cambay(
+            textStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: primaryColor,
+                ),
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.exit_to_app_outlined,
+              color: primaryColor,
+            ),
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: controller,
         children: const [
-          InventoryScreen(),
-          ProductScreen(),
           OrderScreen(),
+          ProductScreen(),
+          ShopInfoScreen(),
         ],
       ),
-      drawer: Drawer(
-        backgroundColor: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10, top: 10),
-              child: Text(
-                'PRODEL',
-                style: GoogleFonts.cambay(
-                  textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 40),
-                ),
-              ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 10,
+        ),
+        child: Material(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(30),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 8,
             ),
-            const SizedBox(
-              height: 70,
-            ),
-            Padding(
-                padding: const EdgeInsets.only(
-                  right: 20,
-                ),
-                child: DashboardItem(
-                    icon: Icons.inventory,
-                    label: "Inventory",
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: NavBarItem(
+                    icon: controller!.index == 0
+                        ? Icons.local_shipping_rounded
+                        : Icons.local_shipping_outlined,
+                    label: 'Orders',
                     isSelected: controller!.index == 0,
                     onTap: () {
                       controller!.animateTo(0);
                       setState(() {});
-                      Navigator.pop(context);
-                    })),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 20,
-              ),
-              child: DashboardItem(
-                icon: Icons.archive_rounded,
-                label: 'Product',
-                isSelected: controller!.index == 1,
-                onTap: () {
-                  controller!.animateTo(1);
-                  setState(() {});
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 20,
-              ),
-              child: DashboardItem(
-                icon: Icons.production_quantity_limits,
-                label: 'Order',
-                isSelected: controller!.index == 2,
-                onTap: () {
-                  controller!.animateTo(2);
-                  setState(() {});
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 20,
-              ),
-              child: DashboardItem(
-                icon: Icons.logout,
-                label: 'Logout',
-                isSelected: controller!.index == 3,
-                onTap: () {
-                  // controller!.animateTo();
-                  setState(
-                    () {
-                      showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                                title: Column(
-                                  children: const [],
-                                ),
-                                content: const Text(
-                                  "Are you sure you want to Logout? ",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HomeScreen()),
-                                      );
-                                    },
-                                    child: Container(
-                                      color: Color.fromARGB(255, 175, 184, 191),
-                                      padding: const EdgeInsets.all(14),
-                                      child: const Text(
-                                        "Cancel",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LoginScreen()),
-                                      );
-                                    },
-                                    child: Container(
-                                      color: Colors.blue,
-                                      padding: const EdgeInsets.all(14),
-                                      child: const Text(
-                                        "Logout",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ));
                     },
-                  );
-                },
-              ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: NavBarItem(
+                    icon: controller!.index == 1
+                        ? Icons.inventory_2_rounded
+                        : Icons.inventory_2_outlined,
+                    label: 'Products',
+                    isSelected: controller!.index == 1,
+                    onTap: () {
+                      controller!.animateTo(1);
+                      setState(() {});
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: NavBarItem(
+                    icon: controller!.index == 2
+                        ? Icons.store
+                        : Icons.store_outlined,
+                    label: 'Shop',
+                    isSelected: controller!.index == 2,
+                    onTap: () {
+                      controller!.animateTo(2);
+                      setState(() {});
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
-class DashboardItem extends StatelessWidget {
+class NavBarItem extends StatelessWidget {
   final IconData icon;
 
   final String label;
   final bool isSelected;
   final Function() onTap;
-  const DashboardItem({
+  const NavBarItem({
     super.key,
     required this.icon,
     required this.label,
@@ -206,40 +142,37 @@ class DashboardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Material(
-        color: isSelected
-            ? Color.fromARGB(255, 112, 121, 146)
-            : Color.fromARGB(26, 117, 114, 114),
+    return Material(
+      color: isSelected ? primaryColor.withOpacity(0.1) : Colors.white10,
+      borderRadius: BorderRadius.circular(30),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(30),
+        onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Container(
-              //   width: 10,
-              //   height: 10,
-              //   color: const Color(0xFF5B62FC),
-              // ),
               Icon(
                 icon,
-                color: Color.fromARGB(255, 11, 3, 168),
-                size: 30,
+                color:
+                    isSelected ? primaryColor : primaryColor.withOpacity(0.9),
+                size: 25,
               ),
               const SizedBox(
-                width: 20,
+                width: 1,
               ),
               Text(
                 label,
-                style: GoogleFonts.cambay(
-                  textStyle:
-                      Theme.of(context).textTheme.headlineSmall!.copyWith(
-                            color: Color.fromARGB(255, 11, 3, 168),
-                            fontWeight: FontWeight.bold,
-                          ),
-                ),
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      color: isSelected
+                          ? primaryColor
+                          : primaryColor.withOpacity(0.9),
+                      fontWeight:
+                          isSelected ? FontWeight.w600 : FontWeight.w500,
+                    ),
               ),
             ],
           ),

@@ -1,10 +1,13 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/home_screen.dart';
-import 'package:prodel_shop/ui/screen/signup_screen.dart';
-import 'package:prodel_shop/ui/screen/widgets/custom_button.dart';
+import 'package:prodel_shop/ui/widgets/custom_alert_dialog.dart';
+import 'package:prodel_shop/ui/widgets/custom_button.dart';
+import 'package:prodel_shop/ui/widgets/custom_input_form_field.dart';
+import 'package:prodel_shop/values/colors.dart';
+
+import '../../blocs/sign_in/sign_in_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,125 +17,148 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool isObscure = true;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: 350,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 200,
-              ),
-              Material(
-                child: TextField(
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.email,
-                        color: Colors.black,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      hintText: "Email Address",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(60),
-                        borderSide: BorderSide.none,
-                      )),
+      body: BlocProvider<SignInBloc>(
+        create: (context) => SignInBloc(),
+        child: BlocConsumer<SignInBloc, SignInState>(
+          listener: (context, state) {
+            if (state is SignInFailureState) {
+              showDialog(
+                context: context,
+                builder: (context) => const CustomAlertDialog(
+                  title: "Login Failed",
+                  message:
+                      'Please check your email and password and try again.',
+                  primaryButtonLabel: 'Ok',
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Material(
-                child: TextField(
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.lock_outline_rounded,
-                        color: Colors.black,
-                      ),
-                      suffixIcon: Icon(
-                        Icons.visibility,
-                        color: Colors.black,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      hintText: "Password",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(60),
-                        borderSide: BorderSide.none,
-                      )),
+              );
+            } else if (state is SignInSuccessState) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(),
                 ),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              SizedBox(
-                width: 150,
-                child: CustomButton(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
-                    );
-                  },
-                  label: 'Login',
-                ),
-              ),
-              // SizedBox(
-              //   width: 180,
-              //   child: TextField(
-              //     textAlign: TextAlign.center,
-              //     decoration: InputDecoration(
-              //         filled: true,
-              //         fillColor: Color.fromARGB(255, 228, 224, 224),
-              //         hintText: "Login",
-              //         hintStyle: TextStyle(
-              //           fontSize: 20,
-              //           fontWeight: FontWeight.w600,
-              //           color: Colors.black,
-              //         ),
-              //         border: OutlineInputBorder(
-              //           borderRadius: BorderRadius.circular(60),
-              //           borderSide: BorderSide.none,
-              //         )),
-              //     onTap: () {
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(builder: (context) => const HomeScreen()),
-              //       );
-              //     },
-              //   ),
-              // ),
-              SizedBox(
-                height: 50,
-              ),
-
-              RichText(
-                text: TextSpan(
-                  text: 'Dont have an account?',
-                  children: [
-                    TextSpan(
-                      text: ' Sign up',
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w500,
-                          ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () async {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignUpScreen()),
-                          );
+              );
+            }
+          },
+          builder: (context, state) {
+            return Material(
+              color: Colors.transparent,
+              child: Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'PRODEL Shop',
+                        style: GoogleFonts.cambay(
+                          textStyle:
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 1,
+                      ),
+                      Text(
+                        'Login with email and password to continue',
+                        style: GoogleFonts.cambay(
+                          textStyle:
+                              Theme.of(context).textTheme.titleMedium!.copyWith(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Divider(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      CustomInputFormField(
+                        controller: _emailController,
+                        prefixIcon: Icons.email_outlined,
+                        hintText: 'Email',
+                        validator: (value) {
+                          if (value != null && value.trim().isNotEmpty) {
+                            return null;
+                          } else {
+                            return "Please enter an email";
+                          }
                         },
-                    ),
-                  ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      CustomInputFormField(
+                        controller: _passwordController,
+                        hintText: 'Password',
+                        prefixIcon: Icons.lock_outline_rounded,
+                        isObscure: isObscure,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            isObscure = !isObscure;
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            isObscure ? Icons.visibility_off : Icons.visibility,
+                            color: primaryColor,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value != null && value.trim().isNotEmpty) {
+                            return null;
+                          } else {
+                            return "Please enter password";
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomButton(
+                        onTap: () {
+                          String email = _emailController.text.trim();
+                          String password = _passwordController.text.trim();
+
+                          if (_formKey.currentState!.validate()) {
+                            BlocProvider.of<SignInBloc>(context).add(
+                              SignInEvent(
+                                email: email,
+                                password: password,
+                              ),
+                            );
+                          }
+                        },
+                        label: 'Login',
+                        isLoading: state is SignInLoadingState,
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

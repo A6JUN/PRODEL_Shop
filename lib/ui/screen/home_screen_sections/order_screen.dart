@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prodel_shop/ui/screen/order_screen_sections/accepted_orders_screen.dart';
-import 'package:prodel_shop/ui/screen/order_screen_sections/new_orders_screen.dart';
-import 'package:prodel_shop/ui/screen/order_screen_sections/canceled_orders_screen.dart';
-import 'package:prodel_shop/ui/screen/order_screen_sections/packed_orders_screen.dart';
-import 'package:prodel_shop/ui/screen/order_screen_sections/delivered_orders_screen.dart';
+import 'package:prodel_shop/ui/widgets/orders/order_status_item.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -12,93 +8,72 @@ class OrderScreen extends StatefulWidget {
   State<OrderScreen> createState() => _OrderScreenState();
 }
 
-class _OrderScreenState extends State<OrderScreen>
-    with SingleTickerProviderStateMixin {
-  TabController? _tabController;
-
-  @override
-  void initState() {
-    _tabController = TabController(
-      length: 5,
-      vsync: this,
-    );
-    super.initState();
-  }
+class _OrderScreenState extends State<OrderScreen> {
+  OrderStatus orderStatus = OrderStatus.pending;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 1500,
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Order Management',
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                    fontWeight: FontWeight.w900,
-                    color: Colors.black,
-                  ),
-            ),
-            const SizedBox(
-              height: 20,
+              height: 10,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                OrderTabItem(
-                  isSelected: _tabController!.index == 0,
-                  label: 'New Orders',
-                  onTap: () {
-                    _tabController!.animateTo(0);
-                    setState(() {});
-                  },
+                Expanded(
+                  child: OrderStatusItem(
+                    iconData: Icons.pending_actions_outlined,
+                    isSelected: orderStatus == OrderStatus.pending,
+                    label: 'Pending',
+                    onTap: () {
+                      orderStatus = OrderStatus.pending;
+                      setState(() {});
+                    },
+                    orderStatus: orderStatus == OrderStatus.pending
+                        ? OrderStatus.pending
+                        : null,
+                  ),
                 ),
                 const SizedBox(
-                  width: 20,
+                  width: 10,
                 ),
-                OrderTabItem(
-                  isSelected: _tabController!.index == 1,
-                  label: 'Accepted Orders',
-                  onTap: () {
-                    _tabController!.animateTo(1);
-                    setState(() {});
-                  },
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                OrderTabItem(
-                  isSelected: _tabController!.index == 2,
-                  label: 'Packed Orders',
-                  onTap: () {
-                    _tabController!.animateTo(2);
-                    setState(() {});
-                  },
+                Expanded(
+                  child: OrderStatusItem(
+                    iconData: Icons.local_shipping_outlined,
+                    isSelected: orderStatus == OrderStatus.packed,
+                    label: 'Packed',
+                    onTap: () {
+                      orderStatus = OrderStatus.packed;
+                      setState(() {});
+                    },
+                    orderStatus: orderStatus == OrderStatus.packed
+                        ? OrderStatus.packed
+                        : null,
+                  ),
                 ),
                 const SizedBox(
-                  width: 20,
+                  width: 10,
                 ),
-                OrderTabItem(
-                  isSelected: _tabController!.index == 3,
-                  label: 'Delivered Orders',
-                  onTap: () {
-                    _tabController!.animateTo(3);
-                    setState(() {});
-                  },
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                OrderTabItem(
-                  isSelected: _tabController!.index == 4,
-                  label: 'Canceled',
-                  onTap: () {
-                    _tabController!.animateTo(4);
-                    setState(() {});
-                  },
+                Expanded(
+                  child: OrderStatusItem(
+                    iconData: Icons.done_all_outlined,
+                    isSelected: orderStatus == OrderStatus.complete,
+                    label: 'Completed',
+                    onTap: () {
+                      orderStatus = OrderStatus.complete;
+                      setState(() {});
+                    },
+                    orderStatus: orderStatus == OrderStatus.complete
+                        ? OrderStatus.complete
+                        : null,
+                  ),
                 ),
               ],
             ),
@@ -106,15 +81,16 @@ class _OrderScreenState extends State<OrderScreen>
               height: 30,
             ),
             Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  NewOrdersScreen(),
-                  AcceptedOrdersScreen(),
-                  PackedOrdersScreen(),
-                  DeliveredOrdersScreen(),
-                  CanceledOrdersScreen(),
+              child: Wrap(
+                runSpacing: 10,
+                children: [
+                  Text(
+                    orderStatus == OrderStatus.pending
+                        ? 'Pending'
+                        : orderStatus == OrderStatus.packed
+                            ? 'Packed'
+                            : 'Completed',
+                  )
                 ],
               ),
             )
@@ -150,25 +126,23 @@ class OrderTabItem extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Colors.black,
                         fontWeight: FontWeight.w700,
                       ),
                 ),
-                SizedBox(
-                  height: isSelected ? 5 : 0,
+                const SizedBox(
+                  height: 5,
                 ),
-                isSelected
-                    ? Container(
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(
-                            20,
-                          ),
-                        ),
-                      )
-                    : const SizedBox(),
+                Container(
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.black : Colors.grey[50],
+                    borderRadius: BorderRadius.circular(
+                      20,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

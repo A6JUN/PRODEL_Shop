@@ -1,8 +1,5 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter/widgets.dart';
 
 class EditProduct extends StatefulWidget {
   const EditProduct({super.key});
@@ -117,7 +114,7 @@ class _EditProductState extends State<EditProduct> {
                       height: 25,
                       width: 60,
                       child: Material(
-                        color: Color.fromARGB(255, 212, 206, 206),
+                        color: const Color.fromARGB(255, 212, 206, 206),
                         child: InkWell(
                           onTap: () {},
                           child: Padding(

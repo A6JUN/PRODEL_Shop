@@ -1,11 +1,6 @@
 import 'package:date_field/date_field.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter/widgets.dart';
-import 'package:prodel_shop/ui/screen/home_screen_sections/inventory_screen.dart';
-import 'package:prodel_shop/ui/screen/widgets/custom_button.dart';
 
 const List<String> list = <String>[
   'Grocery',
@@ -274,12 +269,10 @@ class _AddProductState extends State<AddProduct> {
                         validator: (e) => (e?.day ?? 0) == 1
                             ? 'Please not the first day'
                             : null,
-                        onDateSelected: (DateTime value) {
-                          print(value);
-                        },
+                        onDateSelected: (DateTime value) {},
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 50,
                     ),
                     SizedBox(
@@ -298,31 +291,29 @@ class _AddProductState extends State<AddProduct> {
                         validator: (e) => (e?.day ?? 0) == 1
                             ? 'Please not the first day'
                             : null,
-                        onDateSelected: (DateTime value) {
-                          print(value);
-                        },
+                        onDateSelected: (DateTime value) {},
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 const Text(
                   'image',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                   width: 50,
                   child: Material(
                     color: Colors.grey,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
@@ -330,7 +321,7 @@ class _AddProductState extends State<AddProduct> {
                   height: 50,
                   child: Material(
                     color: Colors.white,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                         side: BorderSide(
                             width: 2, color: Color.fromARGB(255, 44, 14, 246))),
                     child: InkWell(
@@ -346,7 +337,7 @@ class _AddProductState extends State<AddProduct> {
                                 .titleMedium!
                                 .copyWith(
                                   fontWeight: FontWeight.w900,
-                                  color: Color.fromARGB(255, 44, 14, 246),
+                                  color: const Color.fromARGB(255, 44, 14, 246),
                                 ),
                           ),
                         ),
