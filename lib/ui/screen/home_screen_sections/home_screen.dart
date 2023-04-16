@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen>
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
+        automaticallyImplyLeading: false,
         title: Text(
           'PRODEL Shop',
           style: GoogleFonts.cambay(
