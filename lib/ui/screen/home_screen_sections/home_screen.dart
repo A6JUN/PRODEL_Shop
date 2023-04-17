@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prodel_shop/ui/screen/home_screen_sections/dashboard_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/product_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/order_screen.dart';
 import 'package:prodel_shop/ui/screen/home_screen_sections/shop_info_screen.dart';
+import 'package:prodel_shop/ui/screen/login_screen.dart';
+import 'package:prodel_shop/ui/widgets/custom_alert_dialog.dart';
 import 'package:prodel_shop/values/colors.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +21,22 @@ class _HomeScreenState extends State<HomeScreen>
   TabController? controller;
   @override
   void initState() {
+    Future.delayed(
+      const Duration(
+        milliseconds: 100,
+      ),
+      () {
+        if (Supabase.instance.client.auth.currentUser == null) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const LoginScreen(),
+            ),
+            (route) => true,
+          );
+        }
+      },
+    );
+
     controller = TabController(length: 3, vsync: this);
     super.initState();
   }
@@ -27,113 +47,135 @@ class _HomeScreenState extends State<HomeScreen>
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(color: primaryColor),
+        centerTitle: true,
         title: Text(
-          'PRODEL Shop',
+          'PRODEL SHOP',
           style: GoogleFonts.cambay(
-            textStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: primaryColor,
+            textStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
                 ),
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.exit_to_app_outlined,
-              color: primaryColor,
-            ),
-          ),
-        ],
       ),
       backgroundColor: Colors.white,
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: controller,
         children: const [
+          DashboardScreen(),
           OrderScreen(),
           ProductScreen(),
-          ShopInfoScreen(),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 10,
-        ),
-        child: Material(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(30),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 8,
+      drawer: Drawer(
+        backgroundColor: const Color(0xFFE6E3F9),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Text(
+                'PRODEL',
+                style: GoogleFonts.cambay(
+                  textStyle:
+                      Theme.of(context).textTheme.headlineMedium!.copyWith(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                          ),
+                ),
+              ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: NavBarItem(
-                    icon: controller!.index == 0
-                        ? Icons.local_shipping_rounded
-                        : Icons.local_shipping_outlined,
-                    label: 'Orders',
-                    isSelected: controller!.index == 0,
-                    onTap: () {
-                      controller!.animateTo(0);
-                      setState(() {});
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: NavBarItem(
-                    icon: controller!.index == 1
-                        ? Icons.inventory_2_rounded
-                        : Icons.inventory_2_outlined,
-                    label: 'Products',
-                    isSelected: controller!.index == 1,
-                    onTap: () {
-                      controller!.animateTo(1);
-                      setState(() {});
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: NavBarItem(
-                    icon: controller!.index == 2
-                        ? Icons.store
-                        : Icons.store_outlined,
-                    label: 'Shop',
-                    isSelected: controller!.index == 2,
-                    onTap: () {
-                      controller!.animateTo(2);
-                      setState(() {});
-                    },
-                  ),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: DashboardItem(
+                icon: Icons.dashboard_outlined,
+                label: 'Dashboard',
+                isSelected: controller!.index == 0,
+                onTap: () {
+                  controller!.animateTo(0);
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
             ),
-          ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: DashboardItem(
+                icon: Icons.local_shipping_outlined,
+                label: 'Orders',
+                isSelected: controller!.index == 1,
+                onTap: () {
+                  controller!.animateTo(1);
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: DashboardItem(
+                icon: Icons.shopping_bag_outlined,
+                label: 'Products',
+                isSelected: controller!.index == 2,
+                onTap: () {
+                  controller!.animateTo(2);
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: DashboardItem(
+                icon: Icons.exit_to_app_outlined,
+                label: 'Logout',
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => CustomAlertDialog(
+                      title: 'Are you sure ?',
+                      message: 'Are you sure that you want to logout ?',
+                      primaryButtonLabel: 'Logout',
+                      primaryOnPressed: () async {
+                        await Supabase.instance.client.auth.signOut();
+
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                          (route) => true,
+                        );
+                      },
+                      secondaryButtonLabel: 'Cancel',
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class NavBarItem extends StatelessWidget {
+class DashboardItem extends StatelessWidget {
   final IconData icon;
-
   final String label;
   final bool isSelected;
   final Function() onTap;
-  const NavBarItem({
+  const DashboardItem({
     super.key,
     required this.icon,
     required this.label,
@@ -144,36 +186,33 @@ class NavBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: isSelected ? primaryColor.withOpacity(0.1) : Colors.white10,
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(20),
+      color: isSelected ? const Color(0xFFB5B8FF) : Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(30),
         onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 icon,
-                color:
-                    isSelected ? primaryColor : primaryColor.withOpacity(0.9),
-                size: 25,
+                color: Colors.black,
+                size: 30,
               ),
               const SizedBox(
-                width: 1,
+                width: 15,
               ),
               Text(
                 label,
-                style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                      color: isSelected
-                          ? primaryColor
-                          : primaryColor.withOpacity(0.9),
-                      fontWeight:
-                          isSelected ? FontWeight.w600 : FontWeight.w500,
-                    ),
+                style: GoogleFonts.cambay(
+                  textStyle: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
               ),
             ],
           ),

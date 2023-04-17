@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prodel_shop/ui/screen/home_screen_sections/home_screen.dart';
-import 'package:prodel_shop/ui/screen/splash_screen.dart';
+import 'package:prodel_shop/ui/screen/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),
+      home: const LoginScreen(),
     );
   }
 }

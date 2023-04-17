@@ -1,6 +1,11 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
+import 'dart:convert';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'product_event.dart';
@@ -12,77 +17,119 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(ProductLoadingState());
       SupabaseClient supabaseClient = Supabase.instance.client;
       SupabaseQueryBuilder queryTable = supabaseClient.from('products');
-      SupabaseQueryBuilder subQueryTable = supabaseClient.from('shops');
-      SupabaseQueryBuilder thirdQueryTable =
+      SupabaseQueryBuilder imagesQueryTable =
           supabaseClient.from('product_images');
-      SupabaseQueryBuilder fourthQueryTable =
-          supabaseClient.from('service_areas');
-      SupabaseQueryBuilder fifthQueryTable =
-          supabaseClient.from('product_categories');
-
-      List<Map<String, dynamic>> products = [];
-      List<Map<String, dynamic>> imageList = [];
       try {
         if (event is GetAllProductsEvent) {
-          List<dynamic> temp = event.query != null
-              ? await queryTable
-                  .select()
-                  .ilike('name', '%${event.query}%')
-                  .ilike('category_id', '%${event.categoryId}%')
-                  .ilike('shop_id', '%${event.shopId}%')
-                  .order("name", ascending: true)
-              : await queryTable.select().order('id', ascending: false);
+          List<dynamic> temp = (await supabaseClient.rpc(
+                'get_products',
+                params: {
+                  'search_category_id': event.categoryId,
+                  'search_query': event.query,
+                },
+              )) ??
+              [];
 
-          List<Map<String, dynamic>> productsTemp =
-              temp.map((e) => e as Map<String, dynamic>).toList();
+          List<Map<String, dynamic>> products = temp.map((e) {
+            Map<String, dynamic> product = e as Map<String, dynamic>;
+            List<dynamic> tempImages = product['images'];
+            List<Map<String, dynamic>> images = tempImages
+                .map((image) => image as Map<String, dynamic>)
+                .toList();
+            product['images'] = images;
+            return product;
+          }).toList();
 
-          for (Map<String, dynamic> product in productsTemp) {
-            String categoryName = await fifthQueryTable
-                .select()
-                .eq(
-                  'id',
-                  product['category_id'],
-                )
-                .single();
+          Logger().wtf(products);
 
-            product['category'] = categoryName;
+          emit(
+            ProductSuccessState(
+              products: products,
+            ),
+          );
+        } else if (event is AddProductEvent) {
+          Uint8List file = event.image.bytes!;
+          String path = await supabaseClient.storage.from('docs').uploadBinary(
+                'images/${DateTime.now().millisecondsSinceEpoch.toString()}${event.image.name}',
+                file,
+              );
 
-            Map<String, dynamic> shop = await subQueryTable
-                .select()
-                .eq('user_id', product['shop_id'])
-                .single();
+          path = path.replaceRange(0, 5, '');
 
-            Map<String, dynamic> image =
-                await thirdQueryTable.select().eq('product_id', product['id']);
-            imageList.add(image);
+          String url = supabaseClient.storage.from('docs').getPublicUrl(path);
 
-            String area = await fourthQueryTable
-                .select()
-                .eq('id', shop['service_area_id'])
-                .single();
+          Logger().wtf(url);
 
-            shop['service_area'] = area;
+          Map<String, dynamic> product = await queryTable
+              .insert({
+                'name': event.name,
+                'description': event.description,
+                'category_id': event.categoryId,
+                'price': event.price,
+                'discounted_price': event.discountedPrice,
+                'measurement': event.measurement,
+                'quantity': event.quantity,
+                'stock': event.stock,
+                'shop_id': supabaseClient.auth.currentUser!.id,
+              })
+              .select()
+              .single();
 
-            Map<String, dynamic> temp = {
-              'product': product,
-              'shop': shop,
-              'images': imageList,
-            };
-
-            products.add(temp);
+          if (product.isNotEmpty) {
+            await imagesQueryTable.insert(
+              {
+                'product_id': product['id'],
+                'image_url': url,
+                'priority': 1,
+              },
+            );
           }
 
-          emit(ProductSuccessState(
-            products: products,
-          ));
-        } else if (event is ChangeProductStatusEvent) {
-          await queryTable.update({
-            'status': event.status,
-          }).eq(
-            'id',
-            event.productId,
-          );
+          add(GetAllProductsEvent());
+        } else if (event is EditProductEvent) {
+          if (event.image != null) {
+            await imagesQueryTable
+                .delete()
+                .eq('product_id', event.productId)
+                .eq('priority', 1);
 
+            Uint8List file = event.image!.bytes!;
+            String path =
+                await supabaseClient.storage.from('docs').uploadBinary(
+                      'images/${DateTime.now().millisecondsSinceEpoch.toString()}${event.image!.name}',
+                      file,
+                    );
+
+            path = path.replaceRange(0, 5, '');
+
+            String url = supabaseClient.storage.from('docs').getPublicUrl(path);
+            await imagesQueryTable.insert(
+              {
+                'product_id': event.productId,
+                'image_url': url,
+                'priority': 1,
+              },
+            );
+          }
+
+          await queryTable.update({
+            'name': event.name,
+            'description': event.description,
+            'category_id': event.categoryId,
+            'price': event.price,
+            'discounted_price': event.discountedPrice,
+            'measurement': event.measurement,
+            'quantity': event.quantity,
+            'stock': event.stock,
+            'shop_id': supabaseClient.auth.currentUser!.id,
+          }).eq('id', event.productId);
+
+          add(GetAllProductsEvent());
+        } else if (event is DeleteProductEvent) {
+          await queryTable.delete().eq(
+                'id',
+                event.productId,
+              );
           add(GetAllProductsEvent());
         }
       } catch (e, s) {

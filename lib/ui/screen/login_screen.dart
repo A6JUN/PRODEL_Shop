@@ -6,6 +6,7 @@ import 'package:prodel_shop/ui/widgets/custom_alert_dialog.dart';
 import 'package:prodel_shop/ui/widgets/custom_button.dart';
 import 'package:prodel_shop/ui/widgets/custom_input_form_field.dart';
 import 'package:prodel_shop/values/colors.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../blocs/sign_in/sign_in_bloc.dart';
 
@@ -23,142 +24,165 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
 
   @override
+  void initState() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (Supabase.instance.client.auth.currentUser != null) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider<SignInBloc>(
-        create: (context) => SignInBloc(),
-        child: BlocConsumer<SignInBloc, SignInState>(
-          listener: (context, state) {
-            if (state is SignInFailureState) {
-              showDialog(
-                context: context,
-                builder: (context) => const CustomAlertDialog(
-                  title: "Login Failed",
-                  message:
-                      'Please check your email and password and try again.',
-                  primaryButtonLabel: 'Ok',
-                ),
-              );
-            } else if (state is SignInSuccessState) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            return Material(
-              color: Colors.transparent,
-              child: Form(
-                key: _formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
+    return Center(
+      child: SizedBox(
+        width: 350,
+        child: BlocProvider<SignInBloc>(
+          create: (context) => SignInBloc(),
+          child: BlocConsumer<SignInBloc, SignInState>(
+            listener: (context, state) {
+              if (state is SignInFailureState) {
+                showDialog(
+                  context: context,
+                  builder: (context) => const CustomAlertDialog(
+                    title: "Login Failed",
+                    message:
+                        'Please check your email and password and try again.',
+                    primaryButtonLabel: 'Ok',
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'PRODEL Shop',
-                        style: GoogleFonts.cambay(
-                          textStyle:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 1,
-                      ),
-                      Text(
-                        'Login with email and password to continue',
-                        style: GoogleFonts.cambay(
-                          textStyle:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Divider(),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      CustomInputFormField(
-                        controller: _emailController,
-                        prefixIcon: Icons.email_outlined,
-                        hintText: 'Email',
-                        validator: (value) {
-                          if (value != null && value.trim().isNotEmpty) {
-                            return null;
-                          } else {
-                            return "Please enter an email";
-                          }
-                        },
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      CustomInputFormField(
-                        controller: _passwordController,
-                        hintText: 'Password',
-                        prefixIcon: Icons.lock_outline_rounded,
-                        isObscure: isObscure,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            isObscure = !isObscure;
-                            setState(() {});
-                          },
-                          icon: Icon(
-                            isObscure ? Icons.visibility_off : Icons.visibility,
-                            color: primaryColor,
+                );
+              } else if (state is SignInSuccessState) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              return Material(
+                color: Colors.transparent,
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'PRODEL Shop',
+                          style: GoogleFonts.cambay(
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
                         ),
-                        validator: (value) {
-                          if (value != null && value.trim().isNotEmpty) {
-                            return null;
-                          } else {
-                            return "Please enter password";
-                          }
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomButton(
-                        onTap: () {
-                          String email = _emailController.text.trim();
-                          String password = _passwordController.text.trim();
+                        const SizedBox(
+                          height: 1,
+                        ),
+                        Text(
+                          'Login with email and password to continue',
+                          style: GoogleFonts.cambay(
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Divider(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomInputFormField(
+                          controller: _emailController,
+                          prefixIcon: Icons.email_outlined,
+                          hintText: 'Email',
+                          validator: (value) {
+                            if (value != null && value.trim().isNotEmpty) {
+                              return null;
+                            } else {
+                              return "Please enter an email";
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomInputFormField(
+                          controller: _passwordController,
+                          hintText: 'Password',
+                          prefixIcon: Icons.lock_outline_rounded,
+                          isObscure: isObscure,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              isObscure = !isObscure;
+                              setState(() {});
+                            },
+                            icon: Icon(
+                              isObscure
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: primaryColor,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value != null && value.trim().isNotEmpty) {
+                              return null;
+                            } else {
+                              return "Please enter password";
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomButton(
+                          onTap: () {
+                            String email = _emailController.text.trim();
+                            String password = _passwordController.text.trim();
 
-                          if (_formKey.currentState!.validate()) {
-                            BlocProvider.of<SignInBloc>(context).add(
-                              SignInEvent(
-                                email: email,
-                                password: password,
-                              ),
-                            );
-                          }
-                        },
-                        label: 'Login',
-                        isLoading: state is SignInLoadingState,
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                    ],
+                            if (_formKey.currentState!.validate()) {
+                              BlocProvider.of<SignInBloc>(context).add(
+                                SignInEvent(
+                                  email: email,
+                                  password: password,
+                                ),
+                              );
+                            }
+                          },
+                          label: 'Login',
+                          isLoading: state is SignInLoadingState,
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

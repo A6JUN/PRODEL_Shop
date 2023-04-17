@@ -48,7 +48,7 @@ class OrderStatusItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 15,
-            vertical: 8,
+            vertical: 10,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -61,21 +61,21 @@ class OrderStatusItem extends StatelessWidget {
                           isSelected ? FontWeight.w600 : FontWeight.normal,
                     ),
               ),
-              // const SizedBox(
-              //   width: 10,
-              // ),
-              // Icon(
-              //   iconData,
-              //   color: isSelected
-              //       ? orderStatus == OrderStatus.pending
-              //           ? Colors.yellow[800]
-              //           : orderStatus == OrderStatus.packed
-              //               ? Colors.blue[700]
-              //               : orderStatus == OrderStatus.complete
-              //                   ? Colors.green
-              //                   : Colors.grey[700]
-              //       : Colors.grey[400],
-              // ),
+              const SizedBox(
+                width: 10,
+              ),
+              Icon(
+                iconData,
+                color: isSelected
+                    ? orderStatus == OrderStatus.pending
+                        ? Colors.yellow[800]
+                        : orderStatus == OrderStatus.packed
+                            ? Colors.blue[700]
+                            : orderStatus == OrderStatus.complete
+                                ? Colors.green
+                                : Colors.grey[700]
+                    : Colors.grey[400],
+              ),
             ],
           ),
         ),
