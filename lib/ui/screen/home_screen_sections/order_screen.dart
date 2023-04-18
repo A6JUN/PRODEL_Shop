@@ -1,6 +1,7 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:prodel_shop/ui/widgets/custom_action_button.dart';
+import 'package:prodel_shop/ui/widgets/custom_icon_button.dart';
 import 'package:prodel_shop/ui/widgets/custom_search.dart';
 import 'package:prodel_shop/ui/widgets/orders/order_status_item.dart';
 import 'package:prodel_shop/values/colors.dart';
@@ -36,15 +37,12 @@ class _OrderScreenState extends State<OrderScreen> {
                         fontWeight: FontWeight.w700,
                       ),
                 ),
-                IconButton(
+                CustomIconButton(
                   onPressed: () {
                     isExpanded = !isExpanded;
                     setState(() {});
                   },
-                  icon: const Icon(
-                    Icons.sort,
-                    color: primaryColor,
-                  ),
+                  iconData: Icons.sort,
                 ),
               ],
             ),
@@ -62,7 +60,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         ),
                       ],
                     ),
-                    // TODO add sorting buttons (user, shop)
+                    // TODO add sorting buttons (date)
                   )
                 : const SizedBox(),
             SizedBox(
@@ -135,7 +133,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     ),
                   ),
                   DataColumn2(
-                    size: ColumnSize.S,
+                    size: ColumnSize.L,
                     label: Text(
                       "Customer",
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -145,17 +143,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     ),
                   ),
                   DataColumn2(
-                    size: ColumnSize.S,
-                    label: Text(
-                      "Shop",
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ),
-                  DataColumn2(
-                    size: ColumnSize.S,
+                    size: ColumnSize.M,
                     label: Text(
                       "Total Price (₹)",
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -165,7 +153,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     ),
                   ),
                   DataColumn2(
-                    size: ColumnSize.S,
+                    size: ColumnSize.M,
                     label: Text(
                       "Date",
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -201,11 +189,6 @@ class _OrderScreenState extends State<OrderScreen> {
                       ),
                       const DataCell(
                         Text(
-                          "New shop",
-                        ),
-                      ),
-                      const DataCell(
-                        Text(
                           "20000",
                         ),
                       ),
@@ -230,15 +213,6 @@ class _OrderScreenState extends State<OrderScreen> {
                               mainAxisSize: MainAxisSize.min,
                               label: 'Customer',
                               onPressed: () {},
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            CustomActionButton(
-                              mainAxisSize: MainAxisSize.min,
-                              label: 'Shop',
-                              onPressed: () {},
-                              color: Colors.teal,
                             ),
                           ],
                         ),
