@@ -131,6 +131,42 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
                 event.productId,
               );
           add(GetAllProductsEvent());
+        } else if (event is UpdateStockEvent) {
+          await queryTable.update({
+            'stock': event.stock,
+            'shop_id': supabaseClient.auth.currentUser!.id,
+          }).eq('id', event.productId);
+
+          add(GetAllProductsEvent());
+        } else if (event is UploadProductImageEvent) {
+          Uint8List file = event.image.bytes!;
+          String path = await supabaseClient.storage.from('docs').uploadBinary(
+                'images/${DateTime.now().millisecondsSinceEpoch.toString()}${event.image.name}',
+                file,
+              );
+
+          path = path.replaceRange(0, 5, '');
+
+          String url = supabaseClient.storage.from('docs').getPublicUrl(path);
+          await imagesQueryTable.insert(
+            {
+              'product_id': event.productId,
+              'image_url': url,
+              'priority': 0,
+            },
+          );
+
+          emit(ProductImageUploadSuccessState());
+        } else if (event is DeleteProductImageEvent) {
+          await imagesQueryTable.delete().eq(
+                'id',
+                event.id,
+              );
+          await supabaseClient.storage
+              .from('docs')
+              .remove(['images/${event.imageUrl}']);
+
+          emit(ProductImageDeleteSuccessState());
         }
       } catch (e, s) {
         Logger().e('$e\n$s');

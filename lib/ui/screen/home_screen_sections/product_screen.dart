@@ -9,6 +9,7 @@ import 'package:prodel_shop/ui/widgets/custom_alert_dialog.dart';
 import 'package:prodel_shop/ui/widgets/custom_icon_button.dart';
 import 'package:prodel_shop/ui/widgets/custom_search.dart';
 import 'package:prodel_shop/ui/widgets/products/add_edit_product_dialog.dart';
+import 'package:prodel_shop/ui/widgets/products/update_stock_dialog.dart';
 import 'package:prodel_shop/values/colors.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -349,15 +350,27 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   iconData:
                                                       Icons.add_box_outlined,
                                                   onPressed: () {
-                                                    //add stock update
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          BlocProvider<
+                                                              ProductBloc>.value(
+                                                        value: productBloc,
+                                                        child:
+                                                            UpdateStockDialog(
+                                                          productDetails: state
+                                                              .products[index],
+                                                        ),
+                                                      ),
+                                                    );
                                                   },
                                                   color: Colors.purple,
                                                 ),
                                                 CustomIconButton(
                                                   iconData:
                                                       Icons.image_outlined,
-                                                  onPressed: () {
-                                                    Navigator.push(
+                                                  onPressed: () async {
+                                                    await Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (_) =>
@@ -365,9 +378,15 @@ class _ProductScreenState extends State<ProductScreen> {
                                                           images: state
                                                                   .products[
                                                               index]['images'],
+                                                          productId:
+                                                              state.products[
+                                                                  index]['id'],
                                                         ),
                                                       ),
                                                     );
+
+                                                    productBloc.add(
+                                                        GetAllProductsEvent());
                                                   },
                                                 ),
                                                 CustomIconButton(
@@ -392,7 +411,15 @@ class _ProductScreenState extends State<ProductScreen> {
                                                 CustomIconButton(
                                                   iconData: Icons
                                                       .delete_forever_outlined,
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    productBloc.add(
+                                                      DeleteProductEvent(
+                                                        productId: state
+                                                                .products[index]
+                                                            ['id'],
+                                                      ),
+                                                    );
+                                                  },
                                                   color: Colors.red,
                                                 ),
                                               ],

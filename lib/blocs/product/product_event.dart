@@ -48,6 +48,35 @@ class DeleteProductEvent extends ProductEvent {
   });
 }
 
+class DeleteProductImageEvent extends ProductEvent {
+  final int id;
+  final String imageUrl;
+
+  DeleteProductImageEvent({
+    required this.id,
+    required this.imageUrl,
+  });
+}
+
+class UpdateStockEvent extends ProductEvent {
+  final int productId, stock;
+
+  UpdateStockEvent({
+    required this.productId,
+    required this.stock,
+  });
+}
+
+class UploadProductImageEvent extends ProductEvent {
+  final PlatformFile image;
+  final int productId;
+
+  UploadProductImageEvent({
+    required this.image,
+    required this.productId,
+  });
+}
+
 class GetAllProductsEvent extends ProductEvent {
   final String? query;
   final int? categoryId, shopId;

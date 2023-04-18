@@ -7,6 +7,10 @@ class ProductInitialState extends ProductState {}
 
 class ProductLoadingState extends ProductState {}
 
+class ProductImageDeleteSuccessState extends ProductState {}
+
+class ProductImageUploadSuccessState extends ProductState {}
+
 class ProductSuccessState extends ProductState {
   final List<Map<String, dynamic>> products;
 
