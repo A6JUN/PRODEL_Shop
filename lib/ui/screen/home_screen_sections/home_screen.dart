@@ -37,7 +37,11 @@ class _HomeScreenState extends State<HomeScreen>
       },
     );
 
-    controller = TabController(length: 3, vsync: this);
+    controller = TabController(
+      length: 3,
+      initialIndex: 1,
+      vsync: this,
+    );
     super.initState();
   }
 

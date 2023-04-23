@@ -87,16 +87,6 @@ class _ProductScreenState extends State<ProductScreen> {
                             },
                             label: 'Add Product',
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          CustomIconButton(
-                            onPressed: () {
-                              isExpanded = !isExpanded;
-                              setState(() {});
-                            },
-                            iconData: Icons.sort,
-                          ),
                         ],
                       ),
                     ],
